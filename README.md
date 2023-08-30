@@ -64,7 +64,7 @@ Here are some planned features and improvements for Celestial:
 - [ ] Minecraft Stuff
 - [ ] Fun Discord Stuff
 - [ ] Bots Structure
-Feel free to [contribute](link_to_contributions_section) to the project by working on any of these tasks or suggesting new ideas.
+Feel free to the project by working on any of these tasks or suggesting new ideas.
 
 ## Acknowledgments
 
