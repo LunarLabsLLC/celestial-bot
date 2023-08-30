@@ -1,12 +1,14 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    kotlin("jvm") version "1.8.21"
+    kotlin("jvm") version "1.9.10"
     application
 }
 
-group = "dev.hydride"
+group = "studios.pinkcloud.celestial"
 version = "1.0-SNAPSHOT"
+
+val jvmTarget = 17
 
 repositories {
     mavenCentral()
@@ -23,8 +25,8 @@ tasks.test {
     useJUnitPlatform()
 }
 
-tasks.withType<KotlinCompile> {
-    kotlinOptions.jvmTarget = "1.8"
+kotlin {
+    jvmToolchain(jvmTarget)
 }
 
 application {
