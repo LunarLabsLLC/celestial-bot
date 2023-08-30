@@ -1,0 +1,34 @@
+name: 💡 Request a Feature
+description: Suggest a feature you want to see in Celestial!
+title: "[Idea]: "
+labels: ["Type: Idea"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to share your ideas!
+
+  - type: textarea
+    id: feature-description
+    attributes:
+      label: Describe the feature
+      description: What feature are you suggesting?
+      placeholder: "Example: I hope Celestial can implement daily bw stats..."
+    validations:
+      required: true
+  - type: textarea
+    id: feature-reasoning
+    attributes:
+      label: How is the feature useful to all users?
+      description: How is the feature useful to all players, server owners and/or developers?
+      placeholder: "Example: People can get the daily stats of a user."
+    validations:
+      required: true
+  - type: checkboxes
+    id: agreements
+    attributes:
+      label: Agreements
+      description: Ensure you have done the following being submitting this issue.
+      options:
+        - label: I have searched for and ensured there isn't already an open issue regarding this.
+          required: true
