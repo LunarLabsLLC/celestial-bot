@@ -8,32 +8,35 @@ plugins {
 
 group = "studios.pinkcloud.celestial"
 version = "1.0-SNAPSHOT"
+
 val jvmTarget = 17
-val jdaVersion = "5.0.0-alpha.11"
-val Version = "1.0-SNAPSHOT"
 
 repositories {
     mavenCentral()
     maven("https://oss.sonatype.org/content/repositories/snapshots")
     maven("https://m2.dv8tion.net/releases")
     maven ("https://jitpack.io")
-
 }
+
+val jdaVersion: String by project
+val kamlVersion: String by project
+val ktomlVersion: String by project
+val slf4jVersion: String by project
+val coroutinesVersion: String by project
+val gsonVersion: String by project
+val botCommandsVersion: String by project
 
 dependencies {
     implementation("net.dv8tion:JDA:$jdaVersion")
-    implementation("com.charleskorn.kaml:kaml:0.52.0")
-    implementation("org.slf4j:slf4j-simple:1.7.32")
-    implementation("com.akuleshov7:ktoml-source-jvm:0.5.0")
-    implementation("com.akuleshov7:ktoml-core:0.5.0")
-    implementation("com.akuleshov7:ktoml-file:0.5.0")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2")
-    implementation("com.google.code.gson:gson:2.8.8")
-    implementation("io.github.freya022:BotCommands:2.10.2")
-
-
+    implementation("com.charleskorn.kaml:kaml:$kamlVersion")
+    implementation("org.slf4j:slf4j-simple:$slf4jVersion")
+    implementation("com.akuleshov7:ktoml-source-jvm:$ktomlVersion")
+    implementation("com.akuleshov7:ktoml-core:$ktomlVersion")
+    implementation("com.akuleshov7:ktoml-file:$ktomlVersion")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
+    implementation("com.google.code.gson:gson:$gsonVersion")
+    implementation("io.github.freya022:BotCommands:$botCommandsVersion")
 }
-
 
 tasks.withType<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar> {
     archiveClassifier.set("")
@@ -42,7 +45,7 @@ tasks.withType<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar> {
     exclude("**/*.kotlin_builtins")
     exclude("META-INF/")
 
-    archiveFileName.set("Celestial-$Version.jar")
+    archiveFileName.set("Celestial-$version.jar")
 }
 
 kotlin {
@@ -50,5 +53,5 @@ kotlin {
 }
 
 application {
-    mainClass.set("studios.pinkcloud.celestial.MainKt")
+    mainClass.set("$group.MainKt")
 }
