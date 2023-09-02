@@ -1,0 +1,23 @@
+{
+	"name": "renderer",
+	"version": "1.0-SNAPSHOT",
+	"description": "Renderer for player stats cards",
+	"main": "build/index.js",
+	"repository": "https://github.com/PinkCloudStudios/celestial-bot.git",
+	"author": "Katherine C. Emily G.",
+	"license": "LGPL-3.0-or-later",
+	"private": false,
+	"type": "module",
+	"devDependencies": {
+		"@types/node": "^20.5.9",
+		"typescript": "^5.2.2"
+	},
+	"dependencies": {
+		"fastify": "^4.22.2",
+		"puppeteer": "^21.1.1"
+	},
+	"scripts": {
+		"prestart": "npx tsc",
+		"start": "node ./build/main.js"
+	}
+}
