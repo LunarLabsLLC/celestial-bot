@@ -14,6 +14,9 @@ fun main() {
     val config = object {}.javaClass.classLoader.getResource("config.toml")
         ?.let { TomlFileReader.decodeFromString<Configuration>(it.readText()) }
     jda = JDABuilder.createLight(config!!.tokens.discord).build().awaitReady()
+    jda.let {
+        it!!.presence.setPresence(Activity.playing(config.botinfo.status), false)
+    }
 
 
     val commandManager = CommandManager.getInstance()
