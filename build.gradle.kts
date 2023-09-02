@@ -8,7 +8,7 @@ plugins {
 
 group = "studios.pinkcloud.celestial"
 version = "1.0-SNAPSHOT"
-val jvmTarget = 11
+val jvmTarget = 17
 val jdaVersion = "5.0.0-alpha.11"
 val Version = "1.0-SNAPSHOT"
 
@@ -28,10 +28,6 @@ dependencies {
 
 }
 
-tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
-    kotlinOptions.javaParameters = true
-    kotlinOptions.jvmTarget = "11"
-}
 
 tasks.withType<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar> {
     archiveClassifier.set("")
