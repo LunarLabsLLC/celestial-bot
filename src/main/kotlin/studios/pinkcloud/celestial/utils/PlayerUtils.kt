@@ -28,7 +28,26 @@ fun fetchPlayerUUID(ign: String): String? {
 
     return null
 }
- fun fetchNameHistory(ign: String): JsonObject? {
+
+fun fetchOptifineCape(ign: String): String? {
+    val uuid = fetchPlayerUUID(ign)
+    if (uuid != null) {
+        val capeUrl = "`http://s.optifine.net/capes/$ign.png"
+        val url = URL(capeUrl)
+        val connection = url.openConnection() as HttpURLConnection
+        connection.requestMethod = "GET"
+        connection.setRequestProperty("Content-Type", "application/json")
+        val responseCode = connection.responseCode
+
+        if (responseCode == 200) {
+            return capeUrl
+        }
+    }
+
+    return null
+}
+
+fun fetchNameHistory(ign: String): JsonObject? {
     val apiUrl = "http://35.75.1.79/profile/$ign"
 //this api is so fucking slow its not even a joke but its the only website i can find to get name history
     try {
