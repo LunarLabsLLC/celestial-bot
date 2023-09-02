@@ -25,6 +25,8 @@ val slf4jVersion: String by project
 val coroutinesVersion: String by project
 val gsonVersion: String by project
 val botCommandsVersion: String by project
+val mongodbVersion: String by project
+val redisVersion: String by project
 
 dependencies {
     implementation("net.dv8tion:JDA:$jdaVersion")
@@ -36,6 +38,10 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
     implementation("com.google.code.gson:gson:$gsonVersion")
     implementation("io.github.freya022:BotCommands:$botCommandsVersion")
+    implementation("org.mongodb:mongodb-driver-sync:$mongodbVersion")
+    implementation("redis.clients:jedis:$redisVersion")
+    implementation("io.github.microutils:kotlin-logging:2.0.10")
+
 }
 
 tasks.withType<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar> {
