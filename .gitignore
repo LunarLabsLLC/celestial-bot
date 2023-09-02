@@ -41,3 +41,7 @@ bin/
 
 ### Mac OS ###
 .DS_Store
+
+## Project Files ##
+#block toml
+*.toml

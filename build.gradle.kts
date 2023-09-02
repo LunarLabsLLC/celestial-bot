@@ -1,28 +1,46 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     kotlin("jvm") version "1.9.10"
+    kotlin("plugin.serialization") version "1.9.10"
+    id("com.github.johnrengelman.shadow") version "7.1.2"
     application
 }
 
 group = "studios.pinkcloud.celestial"
 version = "1.0-SNAPSHOT"
-
-val jvmTarget = 17
+val jvmTarget = 11
+val jdaVersion = "5.0.0-alpha.11"
+val Version = "1.0-SNAPSHOT"
 
 repositories {
     mavenCentral()
-    // Kord Snapshots Repository (Optional):
     maven("https://oss.sonatype.org/content/repositories/snapshots")
+    maven("https://m2.dv8tion.net/releases")
 }
 
 dependencies {
-    testImplementation(kotlin("test"))
-    implementation("dev.kord:kord-core:0.9.0")
+    implementation("net.dv8tion:JDA:$jdaVersion")
+    implementation("com.charleskorn.kaml:kaml:0.52.0")
+    implementation("org.slf4j:slf4j-simple:1.7.32")
+    implementation("com.akuleshov7:ktoml-source-jvm:0.5.0")
+    implementation("com.akuleshov7:ktoml-core:0.5.0")
+    implementation("com.akuleshov7:ktoml-file:0.5.0")
+
 }
 
-tasks.test {
-    useJUnitPlatform()
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
+    kotlinOptions.javaParameters = true
+    kotlinOptions.jvmTarget = "11"
+}
+
+tasks.withType<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar> {
+    archiveClassifier.set("")
+
+    exclude("**/*.kotlin_metadata")
+    exclude("**/*.kotlin_builtins")
+    exclude("META-INF/")
+
+    archiveFileName.set("Celestial-$Version.jar")
 }
 
 kotlin {
@@ -30,5 +48,5 @@ kotlin {
 }
 
 application {
-    mainClass.set("MainKt")
+    mainClass.set("studios.pinkcloud.celestial.MainKt")
 }
