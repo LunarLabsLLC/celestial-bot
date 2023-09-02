@@ -41,7 +41,7 @@ dependencies {
     implementation("io.github.freya022:BotCommands:$botCommandsVersion")
     implementation("org.mongodb:mongodb-driver-sync:$mongodbVersion")
     implementation("redis.clients:jedis:$redisVersion")
-    implementation("io.github.microutils:kotlin-logging:")
+    implementation("io.github.microutils:kotlin-logging:$loggingVersion")
 
 }
 

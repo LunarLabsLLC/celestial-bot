@@ -23,16 +23,16 @@ var jda: JDA? = null
 var startTime: Instant? = null
 var version = "1.0.0-SNAPSHOT"
 val commandsBuilder = CommandsBuilder.newBuilder(1057312650381504543)
-private val logger: KLogger = KotlinLogging.logger {}
-
+val logger: KLogger = KotlinLogging.logger {}
+val config = object {}.javaClass.classLoader.getResource("config.toml")
+    ?.let { TomlFileReader.decodeFromString<Configuration>(it.readText()) }
 fun main() {
-    val config = object {}.javaClass.classLoader.getResource("config.toml")
-        ?.let { TomlFileReader.decodeFromString<Configuration>(it.readText()) }
     jda = JDABuilder.createLight(config!!.tokens.discord).build().awaitReady()
     startTime = Instant.now()
     jda.let {
         it!!.presence.setPresence(Activity.playing(config.botinfo.status), false)
     }
+
     logger.info(
         "Registering commands...")
     CommandsBuilder.newBuilder(1057312650381504543)
@@ -49,6 +49,7 @@ fun main() {
     logger.info("Connecting to Redis...")
     val redisHandler = RedisHandler()
     logger.info("Redis connected!")
+
 
 }
 

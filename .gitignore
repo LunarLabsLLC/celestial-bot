@@ -45,4 +45,4 @@ bin/
 .DS_Store
 
 ## Project Files ##
-src/main/resources/config.toml
+DiscordBot\src\main\resources\config.toml
