@@ -16,6 +16,8 @@ repositories {
     mavenCentral()
     maven("https://oss.sonatype.org/content/repositories/snapshots")
     maven("https://m2.dv8tion.net/releases")
+    maven ("https://jitpack.io")
+
 }
 
 dependencies {
@@ -25,6 +27,10 @@ dependencies {
     implementation("com.akuleshov7:ktoml-source-jvm:0.5.0")
     implementation("com.akuleshov7:ktoml-core:0.5.0")
     implementation("com.akuleshov7:ktoml-file:0.5.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2")
+    implementation("com.google.code.gson:gson:2.8.8")
+    implementation("io.github.freya022:BotCommands:2.10.2")
+
 
 }
 
