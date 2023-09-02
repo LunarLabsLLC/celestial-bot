@@ -27,6 +27,7 @@ val gsonVersion: String by project
 val botCommandsVersion: String by project
 val mongodbVersion: String by project
 val redisVersion: String by project
+val loggingVersion: String by project
 
 dependencies {
     implementation("net.dv8tion:JDA:$jdaVersion")
@@ -40,7 +41,7 @@ dependencies {
     implementation("io.github.freya022:BotCommands:$botCommandsVersion")
     implementation("org.mongodb:mongodb-driver-sync:$mongodbVersion")
     implementation("redis.clients:jedis:$redisVersion")
-    implementation("io.github.microutils:kotlin-logging:2.0.10")
+    implementation("io.github.microutils:kotlin-logging:")
 
 }
 
