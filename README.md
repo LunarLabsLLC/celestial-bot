@@ -69,7 +69,6 @@ Feel free to the project by working on any of these tasks or suggesting new idea
 ## Acknowledgments
 
 - Special thanks to the Hypixel team for their amazing Minecraft server and API.
-- Thanks for the Command Manager from [Monmcgt](https://github.com/Monmcgt/)
 
 ## Contact
 

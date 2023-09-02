@@ -1,18 +1,25 @@
-package studios.pinkcloud.celestial.commands.impl.bot
+package studios.pinkcloud.celestial.commands.bot
 
+import com.freya02.botcommands.api.application.ApplicationCommand
+import com.freya02.botcommands.api.application.CommandScope
+import com.freya02.botcommands.api.application.slash.annotations.JDASlashCommand
 import net.dv8tion.jda.api.EmbedBuilder
-import studios.pinkcloud.celestial.commands.CommandAbstract
-import studios.pinkcloud.celestial.commands.CommandInfo
-import studios.pinkcloud.celestial.commands.RegisterCommand
+import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent
 import studios.pinkcloud.celestial.enums.Colors
 import java.awt.Color
 
-@RegisterCommand
-@CommandInfo(name = "latency", description = "responds with bots latency", autoDeferReply = false)
-class Latency: CommandAbstract(){
-    override fun onSlashCommandInteraction() {
+class Latency : ApplicationCommand() {
+    @JDASlashCommand(
+        scope = CommandScope.GLOBAL,
+        name = "ping",
+        description = "Pong!"
+    )
+    fun onSlashCommand(event: SlashCommandInteractionEvent) {
+        event.deferReply().queue()
+
         val gatewayPing = event.jda.gatewayPing
-        val apiLatency =event.jda.restPing.complete()
+        val apiLatency = event.jda.restPing.complete()
+
         val embed = EmbedBuilder()
             .setTitle("Pong! We got your latency")
             .setDescription("Celestial seems to be alive!")
@@ -22,6 +29,7 @@ class Latency: CommandAbstract(){
             .addField(":robot: Total Latency", "${gatewayPing + apiLatency} ms", true)
             .setFooter("Requested by ${event.user.asTag}", event.user.effectiveAvatarUrl)
             .build()
-        event.replyEmbeds(embed).queue()
+
+        event.hook.sendMessageEmbeds(embed).queue()
     }
 }
