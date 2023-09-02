@@ -16,6 +16,6 @@ jobs:
 
       - name: Trigger Jenkins Job
         run: |
-          curl -X POST "https://ci.bunni.me/job/Celestial%20Bot/buildWithParameters?token=${{ secrets.JENKINS_TOKEN }}" \
+          curl -X POST "https://ci.bunni.me/job/Celestial%20Bot/buildWithParameters" \
           --user ${{ secrets.JENKINS_USERNAME }}:${{ secrets.JENKINS_TOKEN }} \
           --data-urlencode json='{"parameter": [{"name":"param_name", "value":"param_value"}]}'
