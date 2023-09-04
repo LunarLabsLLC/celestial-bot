@@ -16,8 +16,7 @@ import java.awt.Color
 
 class Skin : ApplicationCommand() {
     @JDASlashCommand(
-        name = "skin",
-        description = "Get the Minecraft skin of a player"
+        name = "skin", description = "Get the Minecraft skin of a player"
     )
 
     fun onSlashCommand(event: SlashCommandInteractionEvent, @AppOption(name = "ign") ign: String) {
@@ -27,15 +26,11 @@ class Skin : ApplicationCommand() {
         if (uuid != null) {
             val skinURL = "https://skins.mcstats.com/body/front/$uuid"
 
-            val embed = EmbedBuilder()
-                .setTitle("Minecraft Skin")
-                .setColor(Color.decode(Colors.FIRST_COLOR.hexCode))
-                .setDescription("Skin of player `$ign`")
-                .addField("UUID", uuid.toString(), false)
+            val embed = EmbedBuilder().setTitle("Minecraft Skin").setColor(Color.decode(Colors.FIRST_COLOR.hexCode))
+                .setDescription("Skin of player `$ign`").addField("UUID", uuid.toString(), false)
                 .setFooter("Requested by ${event.user.asTag}", event.user.effectiveAvatarUrl)
 
-                .setImage(skinURL)
-                .build()
+                .setImage(skinURL).build()
 
             event.hook.sendMessageEmbeds(embed).queue()
         } else {

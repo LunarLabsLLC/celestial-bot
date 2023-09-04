@@ -20,4 +20,3 @@ fun fetchServerInfo(server: String): JsonObject? {
     }
     return null
 }
-

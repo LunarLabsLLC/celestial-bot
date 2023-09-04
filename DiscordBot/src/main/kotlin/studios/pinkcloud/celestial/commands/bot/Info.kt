@@ -40,7 +40,11 @@ class Info : ApplicationCommand() {
             .addField("<:Discord:1147577856348663909> Framework", framework, true)
             .addField(":robot: Bot Version", botVersion, true)
             .addField("<:Jenkins:1147579719492059247> Jenkins", "[Jenkins](https://ci.bunni.me/job/Celestial/)", true)
-            .addField("<:dehGithhubTeam:1147578553865601215> Source Code", "[GitHub](https://github.com/PinkCloudStudios/celestial-bot)", true)
+            .addField(
+                "<:dehGithhubTeam:1147578553865601215> Source Code",
+                "[GitHub](https://github.com/PinkCloudStudios/celestial-bot)",
+                true
+            )
             .setFooter("Requested by ${event.user.asTag}", event.user.effectiveAvatarUrl)
             .build()
 

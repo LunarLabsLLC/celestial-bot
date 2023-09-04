@@ -39,7 +39,7 @@ class News : ApplicationCommand() {
                     .setTitle(title)
                     .setDescription(text)
                     .setColor(Color.decode(Colors.FIRST_COLOR.hexCode))
-                    .setDescription("Here is the latest News: "+link)
+                    .setDescription("Here is the latest News: " + link)
                     .build()
 
                 event.hook.sendMessageEmbeds(embed).queue()

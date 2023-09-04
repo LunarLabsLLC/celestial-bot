@@ -19,8 +19,7 @@ import java.net.URL
 class NameHistory : ApplicationCommand() {
 
     @JDASlashCommand(
-        name = "namehistory",
-        description = "Get the Minecraft name history of a player"
+        name = "namehistory", description = "Get the Minecraft name history of a player"
     )
     fun onSlashCommand(event: SlashCommandInteractionEvent, @AppOption(name = "ign") ign: String) {
         event.deferReply().queue()
@@ -35,10 +34,9 @@ class NameHistory : ApplicationCommand() {
 
     private fun buildProfileEmbed(ign: String, profileJson: JsonObject): MessageEmbed {
 
-        val embed = EmbedBuilder()
-            .setTitle("Minecraft name data for $ign")
-            .setColor(Color.decode(Colors.FIRST_COLOR.hexCode))
-            .setDescription("Minecraft profile for player `$ign`")
+        val embed =
+            EmbedBuilder().setTitle("Minecraft name data for $ign").setColor(Color.decode(Colors.FIRST_COLOR.hexCode))
+                .setDescription("Minecraft profile for player `$ign`")
         val uuid = fetchPlayerUUID(ign)
         val skinURL = "https://skins.mcstats.com/bust/$uuid"
         embed.setThumbnail(skinURL)
