@@ -36,6 +36,7 @@ data class LocalSkyWarsStats(
 
 private val jsonIgnoreUnknownKeys = Json { ignoreUnknownKeys = true }
 
+
 fun Application.skywarsStats() {
     routing {
         get("/player/skywars") {
