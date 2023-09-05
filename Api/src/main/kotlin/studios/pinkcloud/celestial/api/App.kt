@@ -5,11 +5,18 @@ import io.ktor.server.application.*
 import io.ktor.server.engine.*
 import io.ktor.server.netty.*
 import io.ktor.server.plugins.contentnegotiation.*
+import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 import okhttp3.OkHttpClient
 import studios.pinkcloud.celestial.api.routing.games.bedwarsStats
+import studios.pinkcloud.celestial.api.routing.games.skywarsStats
 
 const val hypixelApi = "https://api.hypixel.net"
+
+@Serializable
+data class UUID(val uuid: String) {
+    override fun toString(): String = uuid
+}
 
 fun main() {
     embeddedServer(
@@ -30,4 +37,5 @@ fun Application.module() {
         json()
     }
     bedwarsStats()
+    skywarsStats()
 }

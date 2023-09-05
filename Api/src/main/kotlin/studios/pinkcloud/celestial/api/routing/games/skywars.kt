@@ -16,30 +16,29 @@ import studios.pinkcloud.celestial.api.hypixelApiKey
 
 
 @Serializable
-data class GlobalBedwarsStats (
-    @SerialName("Experience")                   val experience: Int,
-    @SerialName("games_played_bedwars")         val gamesPlayed: Int,
-    @SerialName("kills_bedwars")                val kills: Int,
-    @SerialName("deaths_bedwars")               val deaths: Int,
-    @SerialName("losses_bedwars")               val loses: Int,
-    @SerialName("beds_broken_bedwars")          val bedsBroken: Int,
-    @SerialName("_items_purchased_bedwars")     val itemsPurchased: Int,
-    @SerialName("beds_lost_bedwars")            val bedsLost: Int,
-    @SerialName("void_kills_bedwars")           val voidKills: Int,
-    @SerialName("resources_collected_bedwars")  val collectedResources: Int,
-    @SerialName("final_kills_bedwars")          val finalKills: Int,
-    val coins: Int,
-)
+data class GlobalSkywarsStats (
+    @SerialName("wins")                   val wins: Int,
+    @SerialName("losses")                 val losses: Int,
+    @SerialName("kills")                  val kills: Int,
+    @SerialName("deaths")                 val deaths: Int,
+    @SerialName("coins")                  val coins: Int,
+    @SerialName("heads")                  val heads: Int,
+    @SerialName("souls")                  val souls: Int,
+    @SerialName("opals")                  val opals: Int,
+    @SerialName("angel_of_death_level")   val angelOfDeathLevel: Int,
+    @SerialName("games")                  val games: Int,
+    @SerialName("time_played")            val timePlayed: Int,
+    )
 
-data class LocalBedwarsStats(
+data class LocalSkyWarsStats(
     val prefix: String,
 )
 
 private val jsonIgnoreUnknownKeys = Json { ignoreUnknownKeys = true }
 
-fun Application.bedwarsStats() {
+fun Application.skywarsStats() {
     routing {
-        get("/player/bedwars") {
+        get("/player/skywars") {
             val uuid = call.receive<UUID>()
             val request = Request.Builder()
                 .url("$hypixelApi/player?uuid=$uuid&key=$hypixelApiKey")
@@ -52,9 +51,9 @@ fun Application.bedwarsStats() {
                     val statsElement = receivedJson
                         .jsonObject["player"]!!
                         .jsonObject["stats"]!!
-                        .jsonObject["Bedwars"]!!
-                    val stats = jsonIgnoreUnknownKeys.decodeFromJsonElement<GlobalBedwarsStats>(statsElement)
-                    call.respond<GlobalBedwarsStats>(stats)
+                        .jsonObject["SkyWars"]!!
+                    val stats = jsonIgnoreUnknownKeys.decodeFromJsonElement<GlobalSkywarsStats>(statsElement)
+                    call.respond<GlobalSkywarsStats>(stats)
                 } else {
                     call.respondText("Hypixel API call failed", status = HttpStatusCode.BadGateway)
                 }
