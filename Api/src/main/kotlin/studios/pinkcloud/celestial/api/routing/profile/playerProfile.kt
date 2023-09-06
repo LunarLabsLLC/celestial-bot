@@ -23,30 +23,40 @@ data class UserProfile(
 )
 
 fun playerProfile(uuid: UUID): JsonElement? {
-    logger.debug("Requesting player profile")
-    val request = Request.Builder()
-        .url("$hypixelApi/player?uuid=$uuid&key=$hypixelApiKey")
-        .build()
-    httpClient.newCall(request).execute().use { response ->
-        val received = response.body!!.string()
-        val receivedJson = Json.parseToJsonElement(received)
-        val success = jsonIgnoreUnknownKeys.decodeFromJsonElement<HypixelSuccess>(receivedJson).success
-        val bucket = redisDatabase.getBucket<String>(uuid.toString())
-        return if(success) {
-            val user = receivedJson.jsonObject["player"]
-            bucket.set(Json.encodeToString(UserProfile(
-                uuid.toString(),
-                user!!.jsonObject["displayname"]?.jsonPrimitive.toString(),
-                user.jsonObject["newPackageRank"]?.jsonPrimitive.toString(),
-                user.jsonObject["stats"]!!
-            ))
-            )
-            user
-        } else {
-            bucket.get()?.let {
-                Json.encodeToJsonElement(it)
+    try {
+        logger.debug("Requesting player profile")
+        val request = Request.Builder()
+            .url("$hypixelApi/player?uuid=$uuid&key=$hypixelApiKey")
+            .build()
+
+        httpClient.newCall(request).execute().use { response ->
+            val received = response.body?.string()
+
+            if (received != null) {
+                val receivedJson = Json.parseToJsonElement(received)
+                val success = jsonIgnoreUnknownKeys.decodeFromJsonElement<HypixelSuccess>(receivedJson).success
+                val bucket = redisDatabase.getBucket<String>(uuid.toString())
+
+                if (success) {
+                    val user = receivedJson.jsonObject["player"]
+                    val userProfile = UserProfile(
+                        uuid.toString(),
+                        user?.jsonObject?.get("displayname")?.jsonPrimitive?.content ?: "",
+                        user?.jsonObject?.get("newPackageRank")?.jsonPrimitive?.content ?: "",
+                        user?.jsonObject?.get("stats") ?: JsonNull
+                    )
+                    bucket.set(Json.encodeToString(userProfile))
+                    return user
+                } else {
+                    val cachedData = bucket.get()
+                    if (cachedData != null) {
+                        return Json.decodeFromString<UserProfile>(cachedData).stats
+                    }
+                }
             }
-            null
         }
+    } catch (e: Exception) {
+        logger.error("An error occurred: ${e.message}", e)
     }
+    return null
 }
