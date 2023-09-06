@@ -20,6 +20,7 @@ val ktomlVersion: String by project
 val slf4jVersion: String by project
 val mongodbVersion: String by project
 val redisVersion: String by project
+val redissonVersion: String by project
 val okHttpVersion: String by project
 val okioVersion: String by project
 
@@ -43,6 +44,7 @@ dependencies {
     // Database
     implementation("org.mongodb:mongodb-driver-sync:$mongodbVersion")
     implementation("redis.clients:jedis:$redisVersion")
+    implementation("org.redisson:redisson:$redissonVersion")
     // Http Client
     implementation("com.squareup.okhttp3:okhttp:$okHttpVersion")
     // File IO

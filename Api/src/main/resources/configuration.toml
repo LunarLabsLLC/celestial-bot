@@ -1,0 +1,6 @@
+host = "localhost"
+port = 8080
+
+[redis]
+host = "100.109.35.84"
+port = 6379

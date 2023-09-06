@@ -1,6 +1,8 @@
-GET localhost:8080/player/bedwars
+GET http://localhost:8080/player/bedwars
 Content-Type: application/json
 
 {
-  "uuid": "1ee43f8ec35242c79a4071f99e632c78"
+  "uuid": "3764f94c7d71438793809d655b85c99b"
 }
+
+###

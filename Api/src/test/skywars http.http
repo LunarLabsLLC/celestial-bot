@@ -2,5 +2,5 @@ GET localhost:8080/player/skywars
 Content-Type: application/json
 
 {
-  "uuid": "1ee43f8ec35242c79a4071f99e632c78"
+  "uuid": ""
 }

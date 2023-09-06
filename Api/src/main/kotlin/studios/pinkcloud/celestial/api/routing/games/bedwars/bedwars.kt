@@ -8,11 +8,9 @@ import io.ktor.server.routing.*
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.*
-import okhttp3.Request
-import studios.pinkcloud.celestial.api.UUID
-import studios.pinkcloud.celestial.api.httpClient
-import studios.pinkcloud.celestial.api.hypixelApi
-import studios.pinkcloud.celestial.api.hypixelApiKey
+import studios.pinkcloud.celestial.api.*
+import studios.pinkcloud.celestial.api.routing.Global.jsonIgnoreUnknownKeys
+import studios.pinkcloud.celestial.api.routing.profile.playerProfile
 
 
 @Serializable
@@ -35,30 +33,27 @@ data class LocalBedwarsStats(
     val prefix: String,
 )
 
-private val jsonIgnoreUnknownKeys = Json { ignoreUnknownKeys = true }
-
 fun Application.bedwarsStats() {
     routing {
         get("/player/bedwars") {
             val uuid = call.receive<UUID>()
-            val request = Request.Builder()
-                .url("$hypixelApi/player?uuid=$uuid&key=$hypixelApiKey")
-                .build()
-
-            httpClient.newCall(request).execute().use {response ->
-                if(response.isSuccessful) {
-                    val received = response.body!!.string()
-                    val receivedJson = Json.parseToJsonElement(received)
-                    val statsElement = receivedJson
-                        .jsonObject["player"]!!
-                        .jsonObject["stats"]!!
-                        .jsonObject["Bedwars"]!!
-                    val stats = jsonIgnoreUnknownKeys.decodeFromJsonElement<GlobalBedwarsStats>(statsElement)
-                    call.respond<GlobalBedwarsStats>(stats)
-                } else {
-                    call.respondText("Hypixel API call failed", status = HttpStatusCode.BadGateway)
-                }
+            val profile = playerProfile(uuid)
+            if (profile == null) suspend {
+                call.respondText("Hypixel Api call failed", status = HttpStatusCode.BadGateway)
             }
+
+            var stats: GlobalBedwarsStats? = null
+
+            try {
+                stats = jsonIgnoreUnknownKeys
+                    .decodeFromJsonElement<GlobalBedwarsStats>(
+                        profile!!.jsonObject["stats"]!!.jsonObject["Bedwars"]!!
+                    )
+            } catch (e: NullPointerException) {
+                call.respondText("No UUID provided or Malformed UUID", status = HttpStatusCode.BadRequest)
+            }
+
+            call.respond<GlobalBedwarsStats>(stats!!)
         }
     }
 }

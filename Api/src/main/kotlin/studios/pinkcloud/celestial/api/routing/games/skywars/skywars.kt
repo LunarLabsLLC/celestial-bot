@@ -13,6 +13,7 @@ import studios.pinkcloud.celestial.api.UUID
 import studios.pinkcloud.celestial.api.httpClient
 import studios.pinkcloud.celestial.api.hypixelApi
 import studios.pinkcloud.celestial.api.hypixelApiKey
+import studios.pinkcloud.celestial.api.routing.profile.playerProfile
 
 
 @Serializable
@@ -41,24 +42,23 @@ fun Application.skywarsStats() {
     routing {
         get("/player/skywars") {
             val uuid = call.receive<UUID>()
-            val request = Request.Builder()
-                .url("$hypixelApi/player?uuid=$uuid&key=$hypixelApiKey")
-                .build()
-
-            httpClient.newCall(request).execute().use {response ->
-                if(response.isSuccessful) {
-                    val received = response.body!!.string()
-                    val receivedJson = Json.parseToJsonElement(received)
-                    val statsElement = receivedJson
-                        .jsonObject["player"]!!
-                        .jsonObject["stats"]!!
-                        .jsonObject["SkyWars"]!!
-                    val stats = jsonIgnoreUnknownKeys.decodeFromJsonElement<GlobalSkywarsStats>(statsElement)
-                    call.respond<GlobalSkywarsStats>(stats)
-                } else {
-                    call.respondText("Hypixel API call failed", status = HttpStatusCode.BadGateway)
-                }
+            val profile = playerProfile(uuid)
+            if (profile == null) suspend {
+                call.respondText("Hypixel Api call failed", status = HttpStatusCode.BadGateway)
             }
+
+            var stats: GlobalSkywarsStats? = null
+
+            try {
+                stats = jsonIgnoreUnknownKeys
+                    .decodeFromJsonElement<GlobalSkywarsStats>(
+                        profile!!.jsonObject["stats"]!!.jsonObject["Bedwars"]!!
+                    )
+            } catch (e: NullPointerException) {
+                call.respondText("No UUID provided or Malformed UUID", status = HttpStatusCode.BadRequest)
+            }
+
+            call.respond<GlobalSkywarsStats>(stats!!)
         }
     }
 }
