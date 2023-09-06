@@ -36,8 +36,18 @@ fun playerProfile(uuid: UUID): JsonElement? {
                 val receivedJson = Json.parseToJsonElement(received)
                 val success = jsonIgnoreUnknownKeys.decodeFromJsonElement<HypixelSuccess>(receivedJson).success
                 val bucket = redisDatabase.getBucket<String>(uuid.toString())
+                val cachedData = bucket.get()
 
-                if (success) {
+                if (cachedData != null) {
+                    val cleanedData = cachedData.replace("\\n", "").replace("\\s", "")
+                    try {
+                        return Json.decodeFromString<UserProfile>(cleanedData).stats
+                    } catch (e: Exception) {
+                        logger.error("An error occurred: ${e.message}", e)
+                    }
+                }
+
+                if (false) {
                     val user = receivedJson.jsonObject["player"]
                     val userProfile = UserProfile(
                         uuid.toString(),
@@ -46,7 +56,7 @@ fun playerProfile(uuid: UUID): JsonElement? {
                         user?.jsonObject?.get("stats") ?: JsonNull
                     )
                     bucket.set(Json.encodeToString(userProfile))
-                    return user
+                    return user?.jsonObject?.get("stats")
                 } else {
                     val cachedData = bucket.get()
                     if (cachedData != null) {
