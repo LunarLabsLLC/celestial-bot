@@ -1,4 +1,4 @@
-package studios.pinkcloud.celestial.api.routing.games
+package studios.pinkcloud.celestial.api.routing.games.bedwars
 
 import io.ktor.http.*
 import io.ktor.server.application.*

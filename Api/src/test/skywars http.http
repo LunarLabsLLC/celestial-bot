@@ -1,4 +1,4 @@
-GET localhost:8080/player/bedwars
+GET localhost:8080/player/skywars
 Content-Type: application/json
 
 {

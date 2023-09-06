@@ -6,10 +6,9 @@ import io.ktor.server.engine.*
 import io.ktor.server.netty.*
 import io.ktor.server.plugins.contentnegotiation.*
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.json.Json
 import okhttp3.OkHttpClient
-import studios.pinkcloud.celestial.api.routing.games.bedwarsStats
-import studios.pinkcloud.celestial.api.routing.games.skywarsStats
+import studios.pinkcloud.celestial.api.routing.games.bedwars.bedwarsStats
+import studios.pinkcloud.celestial.api.routing.games.skywars.skywarsStats
 
 const val hypixelApi = "https://api.hypixel.net"
 
