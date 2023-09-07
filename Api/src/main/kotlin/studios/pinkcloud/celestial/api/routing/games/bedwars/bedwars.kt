@@ -10,8 +10,11 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.*
 import studios.pinkcloud.celestial.api.*
 import studios.pinkcloud.celestial.api.routing.Global.jsonIgnoreUnknownKeys
+import studios.pinkcloud.celestial.api.routing.games.Method
+import studios.pinkcloud.celestial.api.routing.games.Stats
+import studios.pinkcloud.celestial.api.routing.games.getLocalStats
+import studios.pinkcloud.celestial.api.routing.games.getStats
 import studios.pinkcloud.celestial.api.routing.profile.playerProfile
-
 
 @Serializable
 data class GlobalBedwarsStats (
@@ -26,47 +29,16 @@ data class GlobalBedwarsStats (
     @SerialName("void_kills_bedwars")           val voidKills: Int,
     @SerialName("resources_collected_bedwars")  val collectedResources: Int,
     @SerialName("final_kills_bedwars")          val finalKills: Int,
-    val coins: Int,
-)
-
-data class LocalBedwarsStats(
-    val prefix: String,
-)
+    @SerialName("coins")                        val coins: Int
+): Stats()
 
 fun Application.bedwarsStats() {
     routing {
         get("/player/bedwars") {
-            try {
-                val uuid = call.receiveOrNull<UUID>()
-
-                if (uuid == null) {
-                    call.respondText("Invalid UUID provided", status = HttpStatusCode.BadRequest)
-                    return@get
-                }
-
-                val profile = playerProfile(uuid)
-
-                if (profile == null) {
-                    call.respondText("Hypixel Api call failed", status = HttpStatusCode.BadGateway)
-                    return@get
-                }
-
-                val stats: GlobalBedwarsStats? = try {
-                    jsonIgnoreUnknownKeys
-                        .decodeFromJsonElement<GlobalBedwarsStats>(
-                            profile.jsonObject["stats"]?.jsonObject?.get("Bedwars") ?: JsonNull
-                        )
-                } catch (e: Exception) {
-                    call.respondText("Error parsing Bedwars stats", status = HttpStatusCode.InternalServerError)
-                    null
-                }
-
-                if (stats != null) {
-                    call.respond(stats)
-                }
-            } catch (e: Exception) {
-                call.respondText("An error occurred: ${e.message}", status = HttpStatusCode.InternalServerError)
-            }
+            getStats<GlobalBedwarsStats>("Bedwars") { return@get }
+        }
+        get("/player/bedwars/eight_one") {
+            getLocalStats<GlobalBedwarsStats>("Bedwars","eight_one", Method.PREFIX) {}
         }
     }
 }

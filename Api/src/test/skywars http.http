@@ -4,3 +4,14 @@ Content-Type: application/json
 {
   "uuid": "3a5321ea336043539f84fa018c5de50b"
 }
+
+###
+
+GET localhost:8080/player/skywars/solo
+Content-Type: application/json
+
+{
+  "uuid": "3a5321ea336043539f84fa018c5de50b"
+}
+
+###

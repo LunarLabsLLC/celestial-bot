@@ -6,3 +6,10 @@ Content-Type: application/json
 }
 
 ###
+
+GET http://localhost:8080/player/bedwars/eight_one
+Content-Type: application/json
+
+{
+  "uuid": "3a5321ea336043539f84fa018c5de50b"
+}
