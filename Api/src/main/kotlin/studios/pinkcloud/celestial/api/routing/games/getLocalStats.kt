@@ -24,27 +24,20 @@ val fixMap = mapOf(
     "timePlayed" to "time_played"
 )
 
-suspend inline fun <reified T: Stats> RequestBody.getLocalStats(
+suspend inline fun <reified T : Stats> RequestBody.getLocalStats(
     gameModeKey: String,
     mode: String,
     method: Method,
-    crossinline exitAction: () -> Unit) {
+    crossinline exitAction: () -> Unit
+) {
     val properties = T::class.declaredMemberProperties
-    val members = mutableListOf<String>()
-    properties.forEach { property ->
-        val propertyReflection = property::class
-        val fieldName = propertyReflection.findAnnotation<SerialName>()?.value
+    val statsMapping = mutableMapOf<String, String>()
 
-        if (fieldName == null) {
-            members += when (method) {
-                Method.SUFFIX -> "${fixMap[property.name]}_$mode"
-                Method.PREFIX -> "${mode}_${fixMap[property.name]}"
-            }
-        } else {
-            members += when (method) {
-                Method.SUFFIX -> "${fieldName}_$mode"
-                Method.PREFIX -> "${mode}_$fieldName"
-            }
+    properties.forEach { property ->
+        val fieldName = property.findAnnotation<SerialName>()?.value ?: property.name
+        statsMapping[fieldName] = when (method) {
+            Method.SUFFIX -> "${fieldName}_$mode"
+            Method.PREFIX -> "${mode}_$fieldName"
         }
     }
 
@@ -60,32 +53,27 @@ suspend inline fun <reified T: Stats> RequestBody.getLocalStats(
         val profile = playerProfile(uuid)
 
         if (profile == null) {
-            call.respondText("Hypixel Api call failed", status = HttpStatusCode.BadGateway)
+            call.respondText("Hypixel API call failed", status = HttpStatusCode.BadGateway)
             exitAction()
             return
         }
 
-        val stats: JsonElement? = try {
-            val element = profile.jsonObject["stats"]?.jsonObject?.get(gameModeKey) ?: JsonNull
-            val eObject = element.jsonObject
-            val constructedObject = buildJsonObject {
-                var iter = 0
-                members.forEach {
-                    val k = if (eObject[it] == null) membersFallback[iter] else it
-                    val currentObject = eObject[k] ?: JsonNull
-                    put(k, currentObject)
-                    iter++
+        val stats: JsonObject = try {
+            val element = profile.jsonObject["stats"]?.jsonObject?.get(gameModeKey) ?: JsonObject(emptyMap())
+            val mappedStats = buildJsonObject {
+                statsMapping.forEach { (original, mapped) ->
+                    val originalValue = element.jsonObject.get(original)?.jsonPrimitive
+                    put(mapped, originalValue ?: JsonNull)
+
                 }
             }
-            constructedObject
+            mappedStats
         } catch (e: Exception) {
             call.respondText("Error parsing $gameModeKey stats", status = HttpStatusCode.InternalServerError)
-            null
+            return
         }
 
-        if (stats != null) {
-            call.respond<JsonElement>(stats)
-        }
+        call.respond<JsonObject>(stats)
     } catch (e: Exception) {
         call.respondText("An error occurred: ${e.message}", status = HttpStatusCode.InternalServerError)
     }
