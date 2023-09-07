@@ -7,9 +7,9 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.*
 import okhttp3.Request
-import org.redisson.Redisson
 import studios.pinkcloud.celestial.api.*
 import studios.pinkcloud.celestial.api.routing.Global.jsonIgnoreUnknownKeys
+import org.redisson.api.RBucket
 
 @Serializable
 data class HypixelSuccess(@SerialName("success") val success: Boolean)
@@ -35,19 +35,18 @@ fun playerProfile(uuid: UUID): JsonElement? {
             if (received != null) {
                 val receivedJson = Json.parseToJsonElement(received)
                 val success = jsonIgnoreUnknownKeys.decodeFromJsonElement<HypixelSuccess>(receivedJson).success
-                val bucket = redisDatabase.getBucket<String>(uuid.toString())
+                val bucket: RBucket<String> = redisDatabase.getBucket(uuid.toString())
                 val cachedData = bucket.get()
 
                 if (cachedData != null) {
-                    val cleanedData = cachedData.replace("\\n", "").replace("\\s", "")
                     try {
-                        return Json.decodeFromString<UserProfile>(cleanedData).stats
+                        return Json.parseToJsonElement(cachedData)
                     } catch (e: Exception) {
-                        logger.error("An error occurred: ${e.message}", e)
+                        logger.error("Error parsing cached data: ${e.message}", e)
                     }
                 }
 
-                if (false) {
+                if (success) {
                     val user = receivedJson.jsonObject["player"]
                     val userProfile = UserProfile(
                         uuid.toString(),
@@ -55,13 +54,9 @@ fun playerProfile(uuid: UUID): JsonElement? {
                         user?.jsonObject?.get("newPackageRank")?.jsonPrimitive?.content ?: "",
                         user?.jsonObject?.get("stats") ?: JsonNull
                     )
-                    bucket.set(Json.encodeToString(userProfile))
-                    return user?.jsonObject?.get("stats")
-                } else {
-                    val cachedData = bucket.get()
-                    if (cachedData != null) {
-                        return Json.decodeFromString<UserProfile>(cachedData).stats
-                    }
+                    val userProfileJson = Json.encodeToString(userProfile)
+                    bucket.set(userProfileJson)
+                    return userProfile.stats
                 }
             }
         }

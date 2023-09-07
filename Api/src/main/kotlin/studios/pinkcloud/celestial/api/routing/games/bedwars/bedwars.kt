@@ -36,24 +36,37 @@ data class LocalBedwarsStats(
 fun Application.bedwarsStats() {
     routing {
         get("/player/bedwars") {
-            val uuid = call.receive<UUID>()
-            val profile = playerProfile(uuid)
-            if (profile == null) suspend {
-                call.respondText("Hypixel Api call failed", status = HttpStatusCode.BadGateway)
-            }
-
-            var stats: GlobalBedwarsStats? = null
-
             try {
-                stats = jsonIgnoreUnknownKeys
-                    .decodeFromJsonElement<GlobalBedwarsStats>(
-                        profile!!.jsonObject["stats"]!!.jsonObject["Bedwars"]!!
-                    )
-            } catch (e: NullPointerException) {
-                call.respondText("No UUID provided or Malformed UUID", status = HttpStatusCode.BadRequest)
-            }
+                val uuid = call.receiveOrNull<UUID>()
 
-            call.respond<GlobalBedwarsStats>(stats!!)
+                if (uuid == null) {
+                    call.respondText("Invalid UUID provided", status = HttpStatusCode.BadRequest)
+                    return@get
+                }
+
+                val profile = playerProfile(uuid)
+
+                if (profile == null) {
+                    call.respondText("Hypixel Api call failed", status = HttpStatusCode.BadGateway)
+                    return@get
+                }
+
+                val stats: GlobalBedwarsStats? = try {
+                    jsonIgnoreUnknownKeys
+                        .decodeFromJsonElement<GlobalBedwarsStats>(
+                            profile.jsonObject["stats"]?.jsonObject?.get("Bedwars") ?: JsonNull
+                        )
+                } catch (e: Exception) {
+                    call.respondText("Error parsing Bedwars stats", status = HttpStatusCode.InternalServerError)
+                    null
+                }
+
+                if (stats != null) {
+                    call.respond(stats)
+                }
+            } catch (e: Exception) {
+                call.respondText("An error occurred: ${e.message}", status = HttpStatusCode.InternalServerError)
+            }
         }
     }
 }

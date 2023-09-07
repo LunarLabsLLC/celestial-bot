@@ -2,7 +2,7 @@ GET http://localhost:8080/player/bedwars
 Content-Type: application/json
 
 {
-  "uuid": "3764f94c7d71438793809d655b85c99b"
+  "uuid": "3a5321ea336043539f84fa018c5de50b"
 }
 
 ###
