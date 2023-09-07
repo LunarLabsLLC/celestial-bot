@@ -31,7 +31,6 @@ suspend inline fun <reified T: Stats> RequestBody.getLocalStats(
     crossinline exitAction: () -> Unit) {
     val properties = T::class.declaredMemberProperties
     val members = mutableListOf<String>()
-    val membersFallback = mutableListOf<String>()
     properties.forEach { property ->
         val propertyReflection = property::class
         val fieldName = propertyReflection.findAnnotation<SerialName>()?.value
@@ -41,13 +40,11 @@ suspend inline fun <reified T: Stats> RequestBody.getLocalStats(
                 Method.SUFFIX -> "${fixMap[property.name]}_$mode"
                 Method.PREFIX -> "${mode}_${fixMap[property.name]}"
             }
-            membersFallback += property.name
         } else {
             members += when (method) {
                 Method.SUFFIX -> "${fieldName}_$mode"
                 Method.PREFIX -> "${mode}_$fieldName"
             }
-            membersFallback += fieldName
         }
     }
 
