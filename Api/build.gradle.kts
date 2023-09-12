@@ -49,6 +49,8 @@ dependencies {
     implementation("com.squareup.okhttp3:okhttp:$okHttpVersion")
     // File IO
     implementation("com.squareup.okio:okio:$okioVersion")
+    testImplementation("io.ktor:ktor-server-test-host-jvm:2.3.4")
+    testImplementation("org.jetbrains.kotlin:kotlin-test-junit:1.9.10")
 }
 
 kotlin {

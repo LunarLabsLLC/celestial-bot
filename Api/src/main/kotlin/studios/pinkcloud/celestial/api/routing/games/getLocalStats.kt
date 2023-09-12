@@ -62,9 +62,10 @@ suspend inline fun <reified T : Stats> RequestBody.getLocalStats(
             val element = profile.jsonObject["stats"]?.jsonObject?.get(gameModeKey) ?: JsonObject(emptyMap())
             val mappedStats = buildJsonObject {
                 statsMapping.forEach { (original, mapped) ->
-                    val originalValue = element.jsonObject.get(original)?.jsonPrimitive
-                    put(mapped, originalValue ?: JsonNull)
-
+                    val originalValue = element.jsonObject[mapped]?.jsonPrimitive
+                    if (originalValue != null) {
+                        put(mapped, originalValue)
+                    }
                 }
             }
             mappedStats

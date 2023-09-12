@@ -15,3 +15,55 @@ Content-Type: application/json
 }
 
 ###
+
+GET localhost:8080/player/skywars/solo_insane
+Content-Type: application/json
+
+{
+  "uuid": "3a5321ea336043539f84fa018c5de50b"
+}
+
+###
+
+GET localhost:8080/player/skywars/solo_normal
+Content-Type: application/json
+
+{
+  "uuid": "3a5321ea336043539f84fa018c5de50b"
+}
+
+###
+
+GET localhost:8080/player/skywars/team
+Content-Type: application/json
+
+{
+  "uuid": "3a5321ea336043539f84fa018c5de50b"
+}
+
+###
+GET localhost:8080/player/skywars/team_normal
+Content-Type: application/json
+
+{
+  "uuid": "3a5321ea336043539f84fa018c5de50b"
+}
+
+###
+GET localhost:8080/player/skywars/team_insane
+Content-Type: application/json
+
+{
+  "uuid": "3a5321ea336043539f84fa018c5de50b"
+}
+
+###
+
+GET localhost:8080/player/skywars/mega
+Content-Type: application/json
+
+{
+  "uuid": "3a5321ea336043539f84fa018c5de50b"
+}
+
+###
