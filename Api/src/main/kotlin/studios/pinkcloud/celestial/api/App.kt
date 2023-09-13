@@ -14,6 +14,7 @@ import org.redisson.Redisson
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import studios.pinkcloud.celestial.api.routing.games.bedwars.bedwarsStats
+import studios.pinkcloud.celestial.api.routing.games.duels.duelsStats
 import studios.pinkcloud.celestial.api.routing.games.skywars.skywarsStats
 
 const val hypixelApi = "https://api.hypixel.net"
@@ -59,4 +60,5 @@ fun Application.module() {
     }
     bedwarsStats()
     skywarsStats()
+    duelsStats()
 }

@@ -1,0 +1,8 @@
+GET localhost:8080/player/duels
+Content-Type: application/json
+
+{
+  "gameMode": "sw",
+  "playerCount": "duel",
+  "uuid": "3764f94c7d71438793809d655b85c99b"
+}

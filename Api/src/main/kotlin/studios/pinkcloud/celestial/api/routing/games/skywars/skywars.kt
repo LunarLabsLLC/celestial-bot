@@ -53,8 +53,6 @@ private val gameModes = arrayOf(
     "hunters_vs_beasts_lab_team"
 )
 
-private val jsonIgnoreUnknownKeys = Json { ignoreUnknownKeys = true }
-
 fun Application.skywarsStats() {
     routing {
         get("/player/skywars") {
