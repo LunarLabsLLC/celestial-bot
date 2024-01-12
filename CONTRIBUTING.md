@@ -12,7 +12,7 @@ Thank you for considering contributing to our project! We appreciate your time a
 
 ### Coding Standards
 
-- Follow the existing code style and conventions.
+- Follow the existing code style and conventions for Kotlin code.
 - Write clear and concise code.
 - Include comments as necessary to explain your changes.
 - Ensure your code is well-documented if it introduces new functionality.
