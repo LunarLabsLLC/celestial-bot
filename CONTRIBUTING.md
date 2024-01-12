@@ -16,6 +16,7 @@ Thank you for considering contributing to our project! We appreciate your time a
 - Write clear and concise code.
 - Include comments as necessary to explain your changes.
 - Ensure your code is well-documented if it introduces new functionality.
+- Test your changes thoroughly to ensure they work as expected in Kotlin code.
 
 ### Commit Messages
 
@@ -24,7 +25,8 @@ Thank you for considering contributing to our project! We appreciate your time a
 
 ### Testing
 
-- Test your changes thoroughly to ensure they work as expected.
+- Test your changes thoroughly to ensure they work as expected in Kotlin code.
+- Include Kotlin-specific tests if applicable, and verify their functionality.
 - Include unit tests, if applicable, and make sure they pass.
 - If your changes impact existing functionality, update or add new tests accordingly.
 
